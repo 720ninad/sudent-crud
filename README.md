@@ -88,3 +88,245 @@ After both the client and server are running, you can access the application in 
 
 ---
 
+
+
+# Student API Documentation
+
+This document outlines the API endpoints for managing student data, including operations like registration, updating, deleting, and retrieving student details along with their marks.
+
+## Base URL
+
+/api/students
+
+## Endpoints
+
+
+
+```json
+
+.1.Register a New Student
+**URL**: `/api/students/register`  
+**Method**: `POST`  
+**Description**: Registers a new student along with their marks.
+
+ Request Body:
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "age": 20,
+  "dob": "2004-05-12",
+  "marks": [
+    {
+      "subject": "Math",
+      "marks": 85
+    },
+    {
+      "subject": "Science",
+      "marks": 90
+    }
+  ]
+}
+
+
+Response:
+201 Created: Student successfully created.
+{
+  "message": "Student added successfully",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "age": 20,
+    "dob": "2004-05-12",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  }
+}
+400 Bad Request: Marks data is missing or invalid.
+{
+  "error": "Marks data is required."
+}
+
+500 Internal Server Error: Server error while processing the request.
+{
+  "error": "Internal Server Error",
+  "error": "<error-message>"
+}
+
+
+
+ 2. Get All Students
+URL: /api/students
+Method: GET
+Description: Retrieves a paginated list of all students with their marks.
+
+Query Parameters:
+page: Page number (default: 1).
+limit: Number of records per page (default: 10).
+
+{
+  "totalCount": 100,
+  "totalPages": 10,
+  "currentPage": 1,
+  "data": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "johndoe@example.com",
+      "age": 20,
+      "dob": "2004-05-12",
+      "marks": [
+        {
+          "subject": "Math",
+          "marks": 85
+        },
+        {
+          "subject": "Science",
+          "marks": 90
+        }
+      ]
+    }
+  ]
+}
+
+
+500 Internal Server Error: Server error while fetching the students.
+
+{
+  "error": "Internal Server Error",
+  "error": "<error-message>"
+}
+
+3. Get Student by ID
+URL: /api/students/:id
+Method: GET
+Description: Retrieves a student by their ID along with their marks.
+
+URL Parameters:
+id: The ID of the student.
+
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "age": 20,
+  "dob": "2004-05-12",
+  "marks": [
+    {
+      "subject": "Math",
+      "marks": 85
+    },
+    {
+      "subject": "Science",
+      "marks": 90
+    }
+  ]
+}
+
+
+404 Not Found: Student not found.
+{
+  "message": "Student not found"
+}
+
+
+
+4. Update Student
+URL: /api/students/:id
+Method: PUT
+Description: Updates the student details and their marks.
+
+URL Parameters:
+id: The ID of the student to update.
+
+Request Body:
+{
+  "name": "John Updated",
+  "email": "johnupdated@example.com",
+  "age": 21,
+  "dob": "2003-04-15",
+  "marks": [
+    {
+      "subject": "Math",
+      "marks": 90
+    },
+    {
+      "subject": "Science",
+      "marks": 95
+    }
+  ]
+}
+
+Response:
+200 OK: Student updated successfully.
+{
+  "message": "Student updated successfully"
+}
+
+404 Not Found: Student not found.
+{
+  "message": "Student not found"
+}
+
+
+
+5. Delete Student
+URL: /api/students/:id
+Method: DELETE
+Description: Deletes a student by their ID.
+
+URL Parameters:
+id: The ID of the student to delete.
+Response:
+200 OK: Student deleted successfully.
+
+{
+  "message": "Student Deleted successfully"
+}
+
+404 Not Found: Student not found.
+{
+  "message": "Student Does Not Exists"
+}
+
+
+
+6. Get All Students (Paginated)
+GET /api/students/:page/:limit
+
+URL Parameters:
+page: The page number (default is 1).
+limit: The number of students per page (default is 10).
+Example Request:
+
+GET /api/students/2/10
+
+Response:
+Success: 200 OK
+{
+  "totalCount": 50,
+  "totalPages": 5,
+  "currentPage": 2,
+  "data": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "age": 20,
+      "dob": "2005-04-15",
+      "marks": [
+        { "subject": "Math", "marks": 85 },
+        { "subject": "Science", "marks": 90 }
+      ]
+    }
+  ]
+}
+
+Error: 500 Internal Server Error
+{
+  "error": "Internal Server Error",
+  "error": "Database error message"
+}
+
+```
+
