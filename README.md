@@ -1,4 +1,5 @@
-Sure! Here's the raw version of the professional README:
+### Project Demo
+[Machine_coding_Test.webm](https://github.com/user-attachments/assets/2b298f16-b814-4bbf-a3b6-a74affe9254e)
 
 ```markdown
 # Student Management System
@@ -86,3 +87,4 @@ After both the client and server are running, you can access the application in 
 - View and manage a list of students.
 
 ---
+
