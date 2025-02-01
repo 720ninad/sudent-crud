@@ -1,6 +1,8 @@
-import axios from "axios";
-import moment from "moment";
 import React, { useState } from "react";
+import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
+import moment from "moment";
+
 const API_URL = "http://localhost:8000";
 
 const StudentTable = ({
@@ -11,6 +13,9 @@ const StudentTable = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
+
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState(null);
 
   const totalPages = Math.ceil(students.length / recordsPerPage);
   const startIndex = (currentPage - 1) * recordsPerPage;
@@ -30,8 +35,14 @@ const StudentTable = ({
             ? currentPage - 1
             : currentPage;
         setCurrentPage(newPage);
+        setShowConfirmDialog(false);
       })
       .catch((err) => console.error("Error deleting student:", err));
+  };
+
+  const handleDeleteClick = (student) => {
+    setStudentToDelete(student);
+    setShowConfirmDialog(true);
   };
 
   return (
@@ -78,7 +89,7 @@ const StudentTable = ({
                     </button>
                     <button
                       className="btn btn-danger btn-sm"
-                      onClick={() => deleteStudent(student.id)}
+                      onClick={() => handleDeleteClick(student)}
                     >
                       Delete
                     </button>
@@ -88,6 +99,34 @@ const StudentTable = ({
           )}
         </tbody>
       </table>
+
+      <Modal
+        show={showConfirmDialog}
+        onHide={() => setShowConfirmDialog(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to delete this student?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowConfirmDialog(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              deleteStudent(studentToDelete.id);
+            }}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       <div className="d-flex justify-content-between align-items-center">
         <div>Total Records: {students.length}</div>
